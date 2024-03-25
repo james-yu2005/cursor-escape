@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import WaitingRoom from './Pages/WaitingRoom';
 import LevelOne from './Pages/LevelOne'; // Import LevelOne component
 import LevelTwo from './Pages/LevelTwo'; // Import LevelTwo component
+import LevelThree from './Pages/LevelThree'; //Import LevelThree component
 import Instructions from './Pages/Instructions';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/Instructions" element={<Instructions/>} />
           <Route path="/level1" element={<LevelOne/>} /> {/* Add route for level 1 */}
           <Route path="/level2" element={<LevelTwo/>} /> {/* Add route for level 2 */}
+          <Route path="/level3" element={<LevelThree/>} /> {/* Add route for level 2 */}
           {/* Add more routes as needed for additional levels */}
         </Routes>
       </div>

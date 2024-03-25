@@ -1,5 +1,5 @@
 import GameCanvas from './GameCanvas'; // Adjust the import path as needed
-import levelTwoImage from '../assets/level2.png'; // Make sure the path is correct
+import levelTwoImage from '../assets/Level2.png'; // Make sure the path is correct
 
 function LevelTwo() {
     return (
