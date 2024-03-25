@@ -10,12 +10,7 @@ function GameCanvas({ nextLevel, initialPosition = { x: 50, y: 50 } }) {
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
-        const image = new Image();
-
-        image.onload = () => {
-            context.drawImage(image, 0, 0);
-        };
-        image.src = levelImage;
+        
 
         const updateCursorPosition = (event) => {
             const rect = canvas.getBoundingClientRect();
@@ -59,3 +54,5 @@ function GameCanvas({ nextLevel, initialPosition = { x: 50, y: 50 } }) {
 
     return <canvas ref={canvasRef} width={800} height={600} />;
 }
+
+export default GameCanvas

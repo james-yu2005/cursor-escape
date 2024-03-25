@@ -11,3 +11,5 @@ function LevelTwo() {
         />
     );
 }
+
+export default LevelTwo

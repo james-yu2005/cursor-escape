@@ -11,3 +11,4 @@ function LevelOne() {
         />
     );
 }
+export default LevelOne
