@@ -1,11 +1,19 @@
 import './App.css';
 import Homepage from './Pages/Homepage';
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import WaitingRoom from './Pages/WaitingRoom';
 
 function App() {
   return (
-    <div className="App">
-      <Homepage></Homepage>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Homepage/>} />
+          <Route path="/WaitingRoom" element={<WaitingRoom/>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
