@@ -73,4 +73,5 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
     return <canvas ref={canvasRef} width={800} height={600} style={{ border: '5px solid black', display: 'block', margin: 'auto' }} />;
 }
 
-export default GameCanvas;
+export default GameCanvas
+
