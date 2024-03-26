@@ -6,11 +6,11 @@ function WaitingRoom() {
 
     return (
         <div>
-            <h1 className="text-center mt-7 mb-6">Waiting for Players...</h1>
+            <h1 className="text-center mt-7 mb-6">Ready to Play?</h1>
             <div className="text-center">
                 <button 
                     onClick={() => navigate('/level1')} 
-                    className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="mt-8 p-2 bg-orange-400 rounded-lg hover:bg-yellow-300 w-39"
                 >
                     Start Game
                 </button>

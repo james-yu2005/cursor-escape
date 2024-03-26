@@ -28,17 +28,24 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
         return () => {
             canvas.removeEventListener('mousemove', updateCursorPosition);
         };
-    }, [cursorPosition, levelImage]); // Add levelImage to the dependency array
+    }, [cursorPosition, levelImage]); // Add cursorPosition and levelImage to the dependency array
+
+    useEffect(() => {
+        // Reset cursor position to initial position when nextLevel changes
+        setCursorPosition(initialPosition);
+    }, [nextLevel]);
 
     const checkCollisionAndMove = (newX, newY) => {
         const context = canvasRef.current.getContext('2d');
         const imageData = context.getImageData(newX, newY, 1, 1).data;
         const color = { r: imageData[0], g: imageData[1], b: imageData[2] };
 
-        if (color.r === 255 && color.g === 128 && color.b === 171) { // Update this if red color changes
+        if (color.r === 255 && color.g === 128 && color.b === 171) { // Red area
             setCursorPosition(initialPosition);
-        } else if (color.r === 211 && color.g === 249 && color.b === 188) { // Update this if green color changes
-            navigate(nextLevel);
+        } else if (color.r === 211 && color.g === 249 && color.b === 188) { // Green area
+            // Navigate to the next level only if cursor is inside the green area
+
+                navigate(nextLevel);
         } else if (!(color.r === 0 && color.g === 0 && color.b === 0)) { // If not black, move the cursor
             setCursorPosition({ x: newX, y: newY });
         }
