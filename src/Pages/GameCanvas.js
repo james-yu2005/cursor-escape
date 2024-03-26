@@ -59,7 +59,7 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
         context.drawImage(image, 0, 0); // Redraw level
         context.fillStyle = 'red'; 
         context.beginPath();
-        context.arc(cursorPosition.x, cursorPosition.y, 10, 0, 2 * Math.PI); // Draw the cursor
+        context.arc(cursorPosition.x, cursorPosition.y, 7, 0, 2 * Math.PI); // Draw the cursor
         context.fill();
     }, [cursorPosition]); 
 

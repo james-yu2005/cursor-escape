@@ -8,6 +8,9 @@ import LevelTwo from './Pages/LevelTwo'; // Import LevelTwo component
 import LevelThree from './Pages/LevelThree'; //Import LevelThree component
 import LevelFour from './Pages/LevelFour';
 import Instructions from './Pages/Instructions';
+import EndPage from './Pages/EndPage';
+import { Analytics } from "@vercel/analytics/react"
+
 
 function App() {
   return (
@@ -21,7 +24,8 @@ function App() {
           <Route path="/level2" element={<LevelTwo/>} /> {/* Add route for level 2 */}
           <Route path="/level3" element={<LevelThree/>} /> {/* Add route for level 2 */}
           <Route path="/level4" element={<LevelFour/>} /> {/* Add route for level 2 */}
-          {/* Add more routes as needed for additional levels */}
+          <Route path="/EndPage" element={<EndPage/>} /> 
+          <Analytics/>
         </Routes>
       </div>
     </Router>

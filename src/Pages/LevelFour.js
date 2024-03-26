@@ -9,7 +9,7 @@ const LevelOne = ()  => {
             <GameCanvas 
                 levelImage={levelFourImage} 
                 initialPosition={{ x: 50, y: 50 }} 
-                nextLevel="/level5" 
+                nextLevel="/EndPage" 
             />
         </>
     );
