@@ -14,6 +14,7 @@ import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
+    <>
     <Router>
       <div className="App">
         <Routes>
@@ -25,10 +26,12 @@ function App() {
           <Route path="/level3" element={<LevelThree/>} /> {/* Add route for level 2 */}
           <Route path="/level4" element={<LevelFour/>} /> {/* Add route for level 2 */}
           <Route path="/EndPage" element={<EndPage/>} /> 
-          <Analytics/>
+         
         </Routes>
       </div>
     </Router>
+     <Analytics/>
+     </>
   );
 }
 
