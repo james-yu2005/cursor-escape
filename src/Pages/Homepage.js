@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LevelOne from "./LevelOne";
 
 export default function Homepage(){
     const navigate = useNavigate();
