@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GameCanvas from "./GameCanvas";
 
 export default function Homepage(){
     const navigate = useNavigate();

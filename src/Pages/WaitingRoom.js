@@ -9,7 +9,7 @@ function WaitingRoom() {
             <h1 className="text-center mt-7 mb-6">Ready to Play?</h1>
             <div className="text-center">
                 <button 
-                    onClick={() => navigate('/level1')} 
+                    onClick={() => navigate('/Game')} 
                     className="mt-8 p-2 bg-orange-400 rounded-lg hover:bg-yellow-300 w-39"
                 >
                     Start Game
