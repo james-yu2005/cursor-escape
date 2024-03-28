@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } }) {
     const canvasRef = useRef(null);
     const navigate = useNavigate();
-    const [cursorPosition, setCursorPosition] = useState(initialPosition); // Set to initial position
-    const image = new Image();  // Define the image variable outside the useEffect hooks
+    const [cursorPosition, setCursorPosition] = useState(initialPosition);
+    const image = new Image();
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -28,7 +28,7 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
         return () => {
             canvas.removeEventListener('mousemove', updateCursorPosition);
         };
-    }, [cursorPosition, levelImage]); // Add cursorPosition and levelImage to the dependency array
+    }, [levelImage]);
 
     useEffect(() => {
         // Reset cursor position to initial position when nextLevel changes
@@ -36,7 +36,16 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
     }, [nextLevel]);
 
     const checkCollisionAndMove = (newX, newY) => {
-        const context = canvasRef.current.getContext('2d');
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+
+        // Ensure newX and newY are within the bounds of the canvas
+        if (newX < 0 || newX >= canvasWidth || newY < 0 || newY >= canvasHeight) {
+            return; // Return early if coordinates are out of bounds
+        }
+
         const imageData = context.getImageData(newX, newY, 1, 1).data;
         const color = { r: imageData[0], g: imageData[1], b: imageData[2] };
 
@@ -44,8 +53,7 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
             setCursorPosition(initialPosition);
         } else if (color.r === 211 && color.g === 249 && color.b === 188) { // Green area
             // Navigate to the next level only if cursor is inside the green area
-
-                navigate(nextLevel);
+            navigate(nextLevel);
         } else if (!(color.r === 0 && color.g === 0 && color.b === 0)) { // If not black, move the cursor
             setCursorPosition({ x: newX, y: newY });
         }
@@ -63,7 +71,9 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
         context.fill();
     }, [cursorPosition]); 
 
-    return <canvas ref={canvasRef} width={800} height={600} />;
+    return (
+        <canvas ref={canvasRef} width={800} height={600} style={{ cursor: 'none' }} />
+    );
 }
 
 export default GameCanvas;
