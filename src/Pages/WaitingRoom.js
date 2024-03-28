@@ -6,7 +6,7 @@ function WaitingRoom() {
 
     return (
         <div>
-            <h1 className="text-center mt-7 mb-6">Ready to Play?</h1>
+            <h1 class="text-center mt-20">Ready to Play?</h1>
             <div className="text-center">
                 <button 
                     onClick={() => navigate('/Game')} 

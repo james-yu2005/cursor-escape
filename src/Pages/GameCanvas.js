@@ -62,7 +62,7 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
         const normalizedDirY = magnitude ? dirY / magnitude : 0;
 
         // Determine next potential position
-        const stepSize = 5; // Controls cursor movement "speed"
+        const stepSize = 8; // Controls cursor movement "speed"
         const nextPosX = cursorPos.x + normalizedDirX * stepSize;
         const nextPosY = cursorPos.y + normalizedDirY * stepSize;
 
