@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GameCanvas.css'; // Ensure this CSS file sets the canvas cursor to 'none'
 
-function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } }) {
+function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } }) {
     const [level, setLevel] = useState(1);
     const [cursorPos, setCursorPos] = useState(initialPosition);
     const canvasRef = useRef(null);
@@ -23,7 +23,7 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
         // Add logic here to draw levelImage if necessary
         switch (level) {
           case 1:
-            // Level drawing logic, replaced with appropriate content
+            drawLevelOne(ctx);
             break;
           // Additional cases for other levels
           default:
@@ -92,7 +92,7 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 50, y: 50 } 
         return true; // Allow movement if no collision detected
     };
 
-    return <canvas ref={canvasRef} width={400} height={300} className="canvasGameBoard" />;
+    return <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard"></canvas>;
 }
 
 export default GameCanvas;
