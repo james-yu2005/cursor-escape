@@ -1,12 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GameCanvas.css'; // Ensure this CSS file sets the canvas cursor to 'none'
-import customCursorImage from './grape.png'; // Import the cursor image
+import grape from './grape.png'; // Import the cursor image
+import banana from './banana.png';
+import apple from './apple.png';
 
 function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } }) {
     const [level, setLevel] = useState(1);
     const [cursorPos, setCursorPos] = useState(initialPosition);
     const canvasRef = useRef(null);
+    const [currentCursor, setCurrentCursor] = useState(grape);
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -17,11 +20,6 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
         document.addEventListener('mousemove', handleMouseMove);
         return () => document.removeEventListener('mousemove', handleMouseMove);
     }, [level, cursorPos]);
-
-    useEffect(() => {
-        // Set custom cursor style when component mounts
-        setCustomCursor();
-    }, []);
 
     const drawGameBoard = (ctx) => {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -90,13 +88,29 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
         return true; // Allow movement if no collision detected
     };
 
-    const setCustomCursor = () => {
-        const canvas = canvasRef.current;
-        canvas.style.cursor = `url(${customCursorImage}), auto`;
+    // Function to change cursor to grape
+    const setGrape = () => {
+        setCurrentCursor(grape);
+    };
+
+    // Function to change cursor to apple
+    const setApple = () => {
+        setCurrentCursor(apple);
+    };
+
+    // Function to change cursor to banana
+    const setBanana = () => {
+        setCurrentCursor(banana);
     };
 
     return (
-        <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard"></canvas>
+        <div class="flex flex-col items-center justify-center p-2 ">
+            <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard" style={{ cursor: `url(${currentCursor}), auto` }}></canvas>
+            <button onClick={setGrape} class="mt-6 p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3 ">Grape</button>
+            <button onClick={setBanana} class="mt-6 p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3">Banana</button>
+            <button onClick={setApple} class="mt-6 p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3">Apple</button>
+
+        </div>
     );
 }
 
