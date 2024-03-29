@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GameCanvas.css'; // Ensure this CSS file sets the canvas cursor to 'none'
-
+import customCursorImage from './grape.png'; // Import the cursor image
 
 function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } }) {
     const [level, setLevel] = useState(1);
@@ -9,16 +9,19 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
     const canvasRef = useRef(null);
     const navigate = useNavigate();
     
-
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
-        // Consider adding image loading logic here if levelImage is used
         drawGameBoard(context); // Initial draw
         const handleMouseMove = (e) => updateCursorPos(e);
         document.addEventListener('mousemove', handleMouseMove);
         return () => document.removeEventListener('mousemove', handleMouseMove);
     }, [level, cursorPos]);
+
+    useEffect(() => {
+        // Set custom cursor style when component mounts
+        setCustomCursor();
+    }, []);
 
     const drawGameBoard = (ctx) => {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -33,7 +36,7 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
             // Navigate to nextLevel or another route as appropriate
             navigate(nextLevel);
         }
-        drawTemporaryCursor(ctx); // Draw cursor at its current position
+        // No need to draw the cursor here
     };
 
     const drawLevelOne = (ctx) => {
@@ -42,17 +45,6 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
         ctx.fillStyle = 'green';
         ctx.fillRect(250, 150, 50, 50); // Goal
     };
-
-    const drawTemporaryCursor = (ctx) => {
-        const cursorImage = new Image();
-        cursorImage.src = './grape.png'; // Replace './grape.png' with the path to your cursor image
-    
-        // Ensure the image is loaded before drawing it onto the canvas
-        cursorImage.onload = () => {
-            ctx.drawImage(cursorImage, cursorPos.x, cursorPos.y);
-        };
-    };
-    
 
     const updateCursorPos = (e) => {
         const canvas = canvasRef.current;
@@ -98,7 +90,14 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
         return true; // Allow movement if no collision detected
     };
 
-    return <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard"></canvas>;
+    const setCustomCursor = () => {
+        const canvas = canvasRef.current;
+        canvas.style.cursor = `url(${customCursorImage}), auto`;
+    };
+
+    return (
+        <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard"></canvas>
+    );
 }
 
 export default GameCanvas;
