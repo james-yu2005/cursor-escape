@@ -2,11 +2,13 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GameCanvas.css'; // Ensure this CSS file sets the canvas cursor to 'none'
 
+
 function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } }) {
     const [level, setLevel] = useState(1);
     const [cursorPos, setCursorPos] = useState(initialPosition);
     const canvasRef = useRef(null);
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -42,11 +44,15 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
     };
 
     const drawTemporaryCursor = (ctx) => {
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(cursorPos.x, cursorPos.y, 5, 0, 2 * Math.PI);
-        ctx.fill();
+        const cursorImage = new Image();
+        cursorImage.src = './grape.png'; // Replace './grape.png' with the path to your cursor image
+    
+        // Ensure the image is loaded before drawing it onto the canvas
+        cursorImage.onload = () => {
+            ctx.drawImage(cursorImage, cursorPos.x, cursorPos.y);
+        };
     };
+    
 
     const updateCursorPos = (e) => {
         const canvas = canvasRef.current;
