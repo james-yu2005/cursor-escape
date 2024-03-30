@@ -47,10 +47,10 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
             case 8:
                 drawLevelEight(ctx);
                 break;
+            case 9:
+                <h1>congrats!</h1>
             default:
-                console.log('Congratulations, you have completed all levels!');
-                // Navigate to nextLevel or another route as appropriate
-                navigate(nextLevel);
+                <h1>Congrats!</h1>
         }
         drawTemporaryCursor(ctx); // Draw cursor at its current position
     };
@@ -63,22 +63,47 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
     };
 
     const drawLevelTwo = (ctx) => {
-        // Draw level two elements
-        // Example:
-        ctx.fillStyle = 'blue';
-        ctx.fillRect(50, 50, 100, 100); // Example obstacle
+        ctx.fillStyle = 'black';
+
+        // Horizontal walls
+        ctx.fillRect(200, 100, 100, 10);
+        ctx.fillRect(100, 150, 100, 10);
+        ctx.fillRect(300, 150, 100, 10);
+        ctx.fillRect(200, 200, 100, 10);
+
+        // Vertical walls
+        ctx.fillRect(100, 100, 10, 200);
+        ctx.fillRect(150, 100, 10, 50);
+        ctx.fillRect(150, 200, 10, 50);
+        ctx.fillRect(400, 100, 10, 200);
+
+        // Draw the green box (goal)
         ctx.fillStyle = 'green';
-        ctx.fillRect(250, 250, 50, 50); // Goal
+        ctx.fillRect(500, 500, 50, 50);
     };
 
     // Define drawLevelThree to draw level three elements
     const drawLevelThree = (ctx) => {
-        // Draw level three elements
-        // Example:
-        ctx.fillStyle = 'orange';
-        ctx.fillRect(100, 100, 150, 150); // Example obstacle
+        ctx.fillStyle = 'black';
+
+        // Horizontal walls
+        ctx.fillRect(450, 450, 200, 10);
+        ctx.fillRect(250, 550, 200, 10);
+        ctx.fillRect(150, 650, 200, 10);
+        ctx.fillRect(450, 750, 200, 10);
+
+        // Vertical walls
+        ctx.fillRect(450, 450, 10, 300);
+        ctx.fillRect(250, 550, 10, 200);
+        ctx.fillRect(350, 650, 10, 200);
+        ctx.fillRect(650, 550, 10, 200);
+        ctx.fillRect(550, 450, 10, 300);
+        ctx.fillRect(150, 650, 10, 100);
+        ctx.fillRect(350, 750, 10, 100);
+        ctx.fillRect(650, 750, 10, 100);
+
         ctx.fillStyle = 'green';
-        ctx.fillRect(400, 400, 50, 50); // Goal
+        ctx.fillRect(2, 500, 50, 50);
     };
     // Define drawLevelFour to draw level four elements (Maze)
 const drawLevelFour = (ctx) => {
@@ -159,23 +184,48 @@ const drawLevelEight = (ctx) => {
         const rect = canvas.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
-
+        const boxLeft = 0;
+        const boxTop = 0;
+        const boxRight = 800; // Adjust as needed
+        const boxBottom = 600; // Adjust as needed
+        let nextPosX = mouseX;
+        let nextPosY = mouseY;
+        
+        // Constrain the cursor's position within the box boundaries
+        if (nextPosX < boxLeft) {
+            nextPosX = boxLeft;
+        } else if (nextPosX > boxRight) {
+            nextPosX = boxRight;
+        }
+    
+        if (nextPosY < boxTop) {
+            nextPosY = boxTop;
+        } else if (nextPosY > boxBottom) {
+            nextPosY = boxBottom;
+        }
+    
         // Calculate direction and magnitude of movement
-        const dirX = mouseX - cursorPos.x;
-        const dirY = mouseY - cursorPos.y;
+        const dirX = nextPosX - cursorPos.x;
+        const dirY = nextPosY - cursorPos.y;
+        const stepSize = 8; // Controls cursor movement "speed"
         const magnitude = Math.sqrt(dirX ** 2 + dirY ** 2);
         const normalizedDirX = magnitude ? dirX / magnitude : 0;
         const normalizedDirY = magnitude ? dirY / magnitude : 0;
-
+    
         // Determine next potential position
-        const stepSize = 8; // Controls cursor movement "speed"
-        const nextPosX = cursorPos.x + normalizedDirX * stepSize;
-        const nextPosY = cursorPos.y + normalizedDirY * stepSize;
-
-        if (isPositionValid(canvas, nextPosX, nextPosY)) {
-            setCursorPos({ x: nextPosX, y: nextPosY });
+        const potentialNextPosX = cursorPos.x + normalizedDirX * stepSize;
+        const potentialNextPosY = cursorPos.y + normalizedDirY * stepSize;
+    
+        // Check if the potential next position overlaps with black barriers
+        if (!isPositionValid(canvas, potentialNextPosX, potentialNextPosY)) {
+            return; // Stop further movement if the next position is invalid
         }
+    
+        // Update cursor position state after constraining it within boundaries
+        setCursorPos({ x: nextPosX, y: nextPosY });
     };
+    
+    
 
     const isPositionValid = (canvas, x, y) => {
         const ctx = canvas.getContext('2d');
