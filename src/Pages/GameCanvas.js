@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GameCanvas.css'; // Ensure this CSS file sets the canvas cursor to 'none'
-import grape from '../Cursor_images/grape.png' // Import the cursor image
+import grape from '../Cursor_images/grape.png'; // Import the cursor image
 import banana from '../Cursor_images/banana.png';
 import apple from '../Cursor_images/apple.png';
+import pineapple from '../Cursor_images/pineapple.png'
 
 function GameCanvas({ nextLevel, initialPosition = { x: 25, y: 25 } }) {
     const [level, setLevel] = useState(1);
@@ -11,7 +12,7 @@ function GameCanvas({ nextLevel, initialPosition = { x: 25, y: 25 } }) {
     const canvasRef = useRef(null);
     const [currentCursor, setCurrentCursor] = useState(grape);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
@@ -244,20 +245,19 @@ function GameCanvas({ nextLevel, initialPosition = { x: 25, y: 25 } }) {
             
             if (isBlack) {
                 console.log('Collision with a black obstacle.');
-                return false;
+                return false; // Return false to indicate collision with a black obstacle
             }
             if (isGreen) {
                 console.log('Reached the green goal!');
                 setLevel(prevLevel => prevLevel + 1);
-                return false;
+                return true; // Return true to indicate reaching the green goal
             }
             if (isRed) {
                 console.log('Hit a red block!');
-                
-                return false;
+                return false; // Return false to indicate collision with a red block
             }
         }
-        return true;
+        return true; // Return true if no collision detected
     };
     
     
@@ -274,12 +274,27 @@ function GameCanvas({ nextLevel, initialPosition = { x: 25, y: 25 } }) {
         setCurrentCursor(banana);
     };
 
+    const setPineapple = () => {
+        setCurrentCursor(pineapple);
+    };
+
     return (
         <div className="flex flex-col items-center justify-center p-2 ">
             <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard" style={{ cursor: `url(${currentCursor}), auto` }}></canvas>
-            <button onClick={setGrape} className="mt-6 p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3 ">Grape</button>
-            <button onClick={setBanana} className="mt-6 p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3">Banana</button>
-            <button onClick={setApple} className="mt-6 p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3">Apple</button>
+            <div className="flex justify-center mt-6">
+                <button onClick={setGrape} className="p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3">
+                    Grape
+                </button>
+                <button onClick={setBanana} className="p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3">
+                    Banana
+                </button>
+                <button onClick={setApple} className="p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3">
+                    Apple
+                </button>
+                <button onClick={setPineapple} className="p-2 bg-green-400 rounded-lg hover:bg-blue-400 w-20 ml-3 mr-3">
+                    Pineapple
+                </button>
+            </div>
         </div>
     );
 }
