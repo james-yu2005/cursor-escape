@@ -185,8 +185,16 @@ const drawEndingPage = (ctx) => {
         ctx.arc(cursorPos.x, cursorPos.y, 5, 0, 2 * Math.PI);
         ctx.fill();
     };
-
+    let lastUpdate = 0;
+    const throttleDelay = 200; // Adjust this value as needed
+    
     const updateCursorPos = (e) => {
+        const now = Date.now();
+        if (now - lastUpdate < throttleDelay) {
+            return; // Throttle movement
+        }
+        lastUpdate = now;
+
         const canvas = canvasRef.current;
         const rect = canvas.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
@@ -236,18 +244,20 @@ const drawEndingPage = (ctx) => {
 
     const isPositionValid = (canvas, x, y) => {
         const ctx = canvas.getContext('2d');
-        // Check a slightly larger area around the dot for robust collision detection
-        const imageData = ctx.getImageData(x - 5, y - 5, 10, 10).data;
+        const imageData = ctx.getImageData(x - 1, y - 1, 3, 3).data; // Check a 3x3 area around the cursor
+    
+        // Iterate through the pixels in the 3x3 area
         for (let i = 0; i < imageData.length; i += 4) {
-            const isBlack = imageData[i] === 0 && imageData[i + 1] === 0 && imageData[i + 2] === 0 && imageData[i + 3] === 255;
-            const isGreen = imageData[i] === 0 && imageData[i + 1] === 128 && imageData[i + 2] === 0 && imageData[i + 3] === 255;
-
+            const pixelColor = imageData.slice(i, i + 4);
+            const isBlack = pixelColor[0] === 0 && pixelColor[1] === 0 && pixelColor[2] === 0 && pixelColor[3] === 255;
+            const isGreen = pixelColor[0] === 0 && pixelColor[1] === 128 && pixelColor[2] === 0 && pixelColor[3] === 255;
+    
             if (isBlack) {
-                console.log('Collision with a black obstacle.');
+                // Collision with a black obstacle
                 return false;
             }
             if (isGreen) {
-                console.log('Reached the green goal!');
+                // Reached the green goal
                 setLevel(prevLevel => prevLevel + 1);
                 return false; // To prevent further movement after reaching a goal
             }
@@ -255,7 +265,6 @@ const drawEndingPage = (ctx) => {
         return true; // Allow movement if no collision detected
     };
     
-
     return <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard"></canvas>;
 }
 
