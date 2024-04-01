@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './GameCanvas.css'; // Ensure this CSS file sets the canvas cursor to 'none'
 
 
@@ -9,6 +9,11 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
     const canvasRef = useRef(null);
     const navigate = useNavigate();
     const [gameCompleted, setGameCompleted] = useState(false); // State to track game completion
+
+    const location = useLocation(); // Get the location object
+    const cursorImageSrc = location.state?.cursor || '/path/default-cursor.png'; // Path to default cursor if none selected
+    const cursorImage = new Image();
+    cursorImage.src = cursorImageSrc;
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -180,11 +185,16 @@ const drawEndingPage = (ctx) => {
 };
 
     const drawTemporaryCursor = (ctx) => {
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(cursorPos.x, cursorPos.y, 5, 0, 2 * Math.PI);
-        ctx.fill();
+        // Ensure the image is loaded before attempting to draw
+        if (!cursorImage.complete) {
+            // Image not loaded yet, return or show loading
+            return;
+        }
+
+        // Adjust position to draw the cursor image centered around the cursor position
+        ctx.drawImage(cursorImage, cursorPos.x - cursorImage.width / 2, cursorPos.y - cursorImage.height / 2);
     };
+
     let lastUpdate = 0;
     const throttleDelay = 200; // Adjust this value as needed
     
@@ -243,26 +253,39 @@ const drawEndingPage = (ctx) => {
     
 
     const isPositionValid = (canvas, x, y) => {
+        // The current logic assumes a dot; we need to adjust for the image size
         const ctx = canvas.getContext('2d');
-        const imageData = ctx.getImageData(x - 1, y - 1, 3, 3).data; // Check a 3x3 area around the cursor
-    
-        // Iterate through the pixels in the 3x3 area
-        for (let i = 0; i < imageData.length; i += 4) {
-            const pixelColor = imageData.slice(i, i + 4);
-            const isBlack = pixelColor[0] === 0 && pixelColor[1] === 0 && pixelColor[2] === 0 && pixelColor[3] === 255;
-            const isGreen = pixelColor[0] === 0 && pixelColor[1] === 128 && pixelColor[2] === 0 && pixelColor[3] === 255;
-    
-            if (isBlack) {
-                // Collision with a black obstacle
-                return false;
-            }
-            if (isGreen) {
-                // Reached the green goal
-                setLevel(prevLevel => prevLevel + 1);
-                return false; // To prevent further movement after reaching a goal
+        // Adjust bounds to match cursor image size
+        const bounds = {
+            left: x - cursorImage.width / 2,
+            right: x + cursorImage.width / 2,
+            top: y - cursorImage.height / 2,
+            bottom: y + cursorImage.height / 2,
+        };
+
+        // Sample multiple points on the image if necessary to improve collision accuracy
+        const pointsToCheck = [
+            { x: bounds.left, y: bounds.top },
+            { x: bounds.right, y: bounds.top },
+            { x: bounds.left, y: bounds.bottom },
+            { x: bounds.right, y: bounds.bottom },
+        ];
+
+        // Check each point for a collision
+        for (const point of pointsToCheck) {
+            const imageData = ctx.getImageData(point.x, point.y, 1, 1).data;
+            const isBlack = imageData[0] === 0 && imageData[1] === 0 && imageData[2] === 0 && imageData[3] === 255;
+            const isGreen = imageData[0] === 0 && imageData[1] === 128 && imageData[2] === 0 && imageData[3] === 255;
+
+            if (isBlack || isGreen) {
+                // Handle collision with black or reaching green goal
+                if (isGreen) {
+                    setLevel(prevLevel => prevLevel + 1); // Move to next level
+                }
+                return false; // Collision detected, invalidate position
             }
         }
-        return true; // Allow movement if no collision detected
+        return true; // No collision detected, position is valid
     };
     
     return <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard"></canvas>;
