@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import apple from '../Pages/Cursor_images/apple.png';
 import banana from '../Pages/Cursor_images/banana.png';
 import grape from '../Pages/Cursor_images/grape.png';
-import og from '../Pages/Cursor_images/og.png';
 import pineapple from '../Pages/Cursor_images/pineapple.png';
+import poopy from '../Pages/Cursor_images/poopy.png'
 
 function WaitingRoom() {
     const navigate = useNavigate();
@@ -13,8 +13,8 @@ function WaitingRoom() {
         { src: apple, name: 'Apple' },
         { src: banana, name: 'Banana' },
         { src: grape, name: 'Grape' },
-        { src: og, name: 'OG' },
-        { src: pineapple, name: 'Pineapple' }
+        { src: pineapple, name: 'Pineapple' },
+        { src: poopy, name: 'Poopy'}
     ];
 
     const changeCursor = (delta) => {
