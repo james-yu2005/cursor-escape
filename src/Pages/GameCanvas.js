@@ -8,6 +8,7 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
     const [cursorPos, setCursorPos] = useState(initialPosition);
     const canvasRef = useRef(null);
     const navigate = useNavigate();
+    const [elapsedTime, setElapsedTime] = useState(0)
     const [gameCompleted, setGameCompleted] = useState(false); // State to track game completion
 
     const location = useLocation(); // Get the location object
@@ -27,7 +28,18 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
     }, [level, cursorPos]);
     
     useEffect(() => {
-        if (level === 6) {
+        let timer; // Variable to store timer interval
+        if (!gameCompleted) {
+            // Start the timer when the game is not completed
+            timer = setInterval(() => {
+                setElapsedTime(prevTime => prevTime + 1); // Increment elapsed time every second
+            }, 1000);
+        }
+        return () => clearInterval(timer); // Cleanup on component unmount
+    }, [gameCompleted]);
+    
+    useEffect(() => {
+        if (level === 10) {
             setGameCompleted(true);
         }
     }, [level]);
@@ -53,6 +65,19 @@ function GameCanvas({ levelImage, nextLevel, initialPosition = { x: 25, y: 25 } 
                 break;
             case 6:
                 drawLevelSix(ctx);
+                break;
+            case 7:
+                drawLevelSeven(ctx);
+                break;
+            case 8:
+                drawLevelEight(ctx);
+                break;
+            case 9:
+                drawLevelNine(ctx);
+                break;
+            case 10:
+                drawLevelTen(ctx);
+                break;
             default:
                 drawEndingPage(ctx);
         }
@@ -162,13 +187,97 @@ const drawLevelFive = (ctx) => {
 // Define drawLevelSix to draw level six elements
 const drawLevelSix = (ctx) => {
     // Draw maze walls
-    
+    ctx.fillStyle = 'black';
+
+    // Vertical walls
+    ctx.fillRect(200, 0, 10, 400);
+    ctx.fillRect(400, 0, 10, 400);
+    ctx.fillRect(600, 0, 10, 400);
+
+    // Horizontal walls
+    ctx.fillRect(100, 100, 200, 10);
+    ctx.fillRect(400, 100, 200, 10);
+    ctx.fillRect(100, 300, 600, 10);
 
     // Draw green block (goal)
     ctx.fillStyle = 'green';
-    ctx.fillRect(500, 450, 50, 50);
+    ctx.fillRect(700, 350, 50, 50);
 };
 
+const drawLevelSeven = (ctx) => {
+    // Draw maze walls
+    ctx.fillStyle = 'black';
+
+    // Vertical walls
+    ctx.fillRect(150, 0, 10, 500);
+    ctx.fillRect(300, 100, 10, 400);
+    ctx.fillRect(450, 0, 10, 500);
+
+    // Horizontal walls
+    ctx.fillRect(0, 200, 400, 10);
+    ctx.fillRect(500, 200, 300, 10);
+    ctx.fillRect(0, 400, 800, 10);
+
+    // Draw green block (goal)
+    ctx.fillStyle = 'green';
+    ctx.fillRect(700, 450, 50, 50);
+};
+
+const drawLevelEight = (ctx) => {
+    // Draw maze walls
+    ctx.fillStyle = 'black';
+
+    // Vertical walls
+    ctx.fillRect(150, 0, 10, 600);
+    ctx.fillRect(300, 0, 10, 300);
+    ctx.fillRect(450, 100, 10, 500);
+
+    // Horizontal walls
+    ctx.fillRect(0, 200, 400, 10);
+    ctx.fillRect(500, 200, 300, 10);
+    ctx.fillRect(0, 400, 800, 10);
+
+    // Draw green block (goal)
+    ctx.fillStyle = 'green';
+    ctx.fillRect(700, 350, 50, 50);
+};
+
+const drawLevelNine = (ctx) => {
+    // Draw maze walls
+    ctx.fillStyle = 'black';
+
+    // Vertical walls
+    ctx.fillRect(150, 0, 10, 400);
+    ctx.fillRect(450, 0, 10, 400);
+    ctx.fillRect(300, 100, 10, 400);
+
+    // Horizontal walls
+    ctx.fillRect(0, 200, 400, 10);
+    ctx.fillRect(500, 200, 300, 10);
+    ctx.fillRect(0, 400, 800, 10);
+
+    // Draw green block (goal)
+    ctx.fillStyle = 'green';
+    ctx.fillRect(700, 450, 50, 50);
+};
+
+const drawLevelTen = (ctx) => {
+    // Draw maze walls
+    ctx.fillStyle = 'black';
+
+    // Vertical walls
+    ctx.fillRect(150, 0, 10, 600);
+    ctx.fillRect(300, 0, 10, 600);
+    ctx.fillRect(450, 0, 10, 600);
+
+    // Horizontal walls
+    ctx.fillRect(0, 200, 800, 10);
+    ctx.fillRect(0, 400, 800, 10);
+
+    // Draw green block (goal)
+    ctx.fillStyle = 'green';
+    ctx.fillRect(700, 350, 50, 50);
+};
 
 const drawEndingPage = (ctx) => {
     ctx.fillStyle = 'white';
@@ -288,7 +397,13 @@ const drawEndingPage = (ctx) => {
         return true; // No collision detected, position is valid
     };
     
-    return <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard"></canvas>;
+    return (
+        <>
+            <div class="mt-5 ml-5">Time: {elapsedTime} seconds</div>
+            <canvas ref={canvasRef} width={800} height={600} className="canvasGameBoard"></canvas>;
+        </>
+    
+    )
 }
 
 export default GameCanvas;
