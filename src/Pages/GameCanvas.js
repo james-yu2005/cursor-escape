@@ -175,7 +175,7 @@ const drawLevelFive = (ctx) => {
 
     ctx.fillRect(100, 100, 10, 400);
     ctx.fillRect(290, 100, 10, 400);
-    ctx.fillRect(490, 100, 10, 400);
+
     ctx.fillRect(690, 100, 10, 400);
 
     // Draw green block (goal)
@@ -216,11 +216,11 @@ const drawLevelSeven = (ctx) => {
     // Horizontal walls
     ctx.fillRect(0, 200, 400, 10);
     ctx.fillRect(500, 200, 300, 10);
-    ctx.fillRect(0, 400, 800, 10);
+ 
 
     // Draw green block (goal)
     ctx.fillStyle = 'green';
-    ctx.fillRect(700, 450, 50, 50);
+    ctx.fillRect(700, 0, 50, 50);
 };
 
 const drawLevelEight = (ctx) => {
@@ -247,18 +247,19 @@ const drawLevelNine = (ctx) => {
     ctx.fillStyle = 'black';
 
     // Vertical walls
-    ctx.fillRect(150, 0, 10, 400);
+    ctx.fillRect(130, 30, 10, 400);
     ctx.fillRect(450, 0, 10, 400);
-    ctx.fillRect(300, 100, 10, 400);
+    ctx.fillRect(300, 100, 10, 200);
+    ctx.fillRect(300, 350, 10, 200);
 
     // Horizontal walls
-    ctx.fillRect(0, 200, 400, 10);
+    ctx.fillRect(30, 200, 370, 10);
     ctx.fillRect(500, 200, 300, 10);
-    ctx.fillRect(0, 400, 800, 10);
+    ctx.fillRect(40, 400, 720, 10);
 
     // Draw green block (goal)
     ctx.fillStyle = 'green';
-    ctx.fillRect(700, 450, 50, 50);
+    ctx.fillRect(150, 300, 50, 50);
 };
 
 const drawLevelTen = (ctx) => {
@@ -267,8 +268,7 @@ const drawLevelTen = (ctx) => {
 
     // Vertical walls
     ctx.fillRect(150, 0, 10, 600);
-    ctx.fillRect(300, 0, 10, 600);
-    ctx.fillRect(450, 0, 10, 600);
+    
 
     // Horizontal walls
     ctx.fillRect(0, 200, 800, 10);

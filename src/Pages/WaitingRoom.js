@@ -24,7 +24,7 @@ function WaitingRoom() {
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-2xl mb-4">Ready to Play? Select your Character!</h1>
+            <h1 className="text-2xl mb-10">Ready to Play? Select your Character!</h1>
             <div className="flex items-center mb-2">
                 <button
                     onClick={() => changeCursor(-1)}
@@ -43,7 +43,7 @@ function WaitingRoom() {
             <div className="text-center mb-4">{cursorImages[cursorIndex].name}</div>
             <button
                 onClick={() => navigate('/Game', { state: { cursor: cursorImages[cursorIndex].src } })}
-                className="mt-8 p-2 bg-orange-400 rounded-lg hover:bg-yellow-300 w-39"
+                className="mt-20 p-2 bg-orange-400 rounded-lg hover:bg-yellow-300 w-39"
             >
                 Start Game
             </button>
